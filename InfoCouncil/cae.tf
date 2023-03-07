@@ -17,3 +17,11 @@ resource "azurerm_container_app_environment" "cae" {
   internal_load_balancer_enabled    = true
   log_analytics_workspace_id        = azurerm_log_analytics_workspace.analytics_workspace.id
 }
+
+resource "azurerm_container_registry" "acr" {
+  name                = var.container_registry_name
+  resource_group_name = var.rg_name
+  location            = var.location
+  sku                 = "Standard"
+  admin_enabled       = true
+}

@@ -42,7 +42,8 @@ resource "azurerm_key_vault" "keyvault" {
   tenant_id                         = var.tenant_id
   sku_name                          = var.kv_sku_name
   enabled_for_disk_encryption       = true
-
+  enable_rbac_authorization         = true
+  
   network_acls {
     bypass                          = "AzureServices"
     default_action                  = "Deny"
