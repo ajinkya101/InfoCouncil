@@ -30,7 +30,7 @@ resource "azurerm_role_assignment" "containerapp" {
 
 resource "azurerm_role_assignment" "containerappkv" {
   scope                = data.azurerm_key_vault.kv.id
-  role_definition_name = "Key Vault Secrets Officer"
+  role_definition_name = "Key Vault Secrets User"
   principal_id         = azurerm_user_assigned_identity.containerapp.principal_id
   depends_on = [
     azurerm_user_assigned_identity.containerapp
