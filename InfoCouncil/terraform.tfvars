@@ -86,3 +86,13 @@ cae_dns_a_record_name               = "azurecontainerapps.io"
 subnet2_id                          = "/subscriptions/b867f15c-4e36-4dda-b7a9-53ba28fe2d21/resourceGroups/d-auea-info-rg-prcp-cust/providers/Microsoft.Network/virtualNetworks/d-auea-info-vn-prcp-cust/subnets/d-auea-info-sn-con"
 aw_name                             = "analyticsworkspace"
 subnet3_id                          = "/subscriptions/b867f15c-4e36-4dda-b7a9-53ba28fe2d21/resourceGroups/d-auea-info-rg-prcp-cust/providers/Microsoft.Network/virtualNetworks/d-auea-info-vn-prcp-cust/subnets/d-auea-info-sn-vmss"
+
+#Variables for bastion hosts
+bastion_subnet_id                   = ""
+bastion_pip_name                    = "bastion-pip-01"
+bastion_name                        = "bastion-dev-01"
+
+#Variables for Windows vm
+virtual_machine_name                = "bastion-vm-dev"
+admin_username                      = "DemoAzure"
+admin_password                      = "Azure@654321"
