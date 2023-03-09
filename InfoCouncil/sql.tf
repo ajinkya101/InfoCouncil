@@ -34,6 +34,17 @@ resource "azurerm_private_endpoint" "ss_pe" {
   }
 }
 
+resource "random_password" "sqlpasswd" {
+  length      = var.random_password_length
+  min_upper   = 4
+  min_lower   = 2
+  min_numeric = 4
+  special     = false
+
+  keepers = {
+    admin_password = var.ss_name
+  }
+}
 
 resource "azurerm_mssql_server" "sqlserver" {
   name                              = var.ss_name
@@ -41,7 +52,7 @@ resource "azurerm_mssql_server" "sqlserver" {
   location                          = var.location
   version                           = "12.0"
   administrator_login               = "adminuser"
-  administrator_login_password      = "password4353&^&*"
+  administrator_login_password      = element(concat(random_password.sqlpasswd.*.result, [""]), 0)
   tags                              = var.tags
 }
 
@@ -72,4 +83,10 @@ resource "azurerm_mssql_elasticpool" "ss_ep" {
     max_capacity                    = 5
   }
   depends_on = [azurerm_mssql_server.sqlserver]
+}
+
+resource "azurerm_key_vault_secret" "kvsqlpass" {
+  name         = "sqlpass"
+  value        = element(concat(random_password.passwd.*.result, [""]), 0)
+  key_vault_id = azurerm_key_vault.keyvault.id
 }

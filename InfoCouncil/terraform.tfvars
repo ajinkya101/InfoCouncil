@@ -95,4 +95,3 @@ bastion_name                        = "bastion-dev-01"
 #Variables for Windows vm
 virtual_machine_name                = "bastion-vm-dev"
 admin_username                      = "DemoAzure"
-admin_password                      = "Azure@654321"
