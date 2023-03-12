@@ -34,16 +34,12 @@ resource "azurerm_private_endpoint" "ss_pe" {
   }
 }
 
-resource "random_password" "sqlpasswd" {
-  length      = var.random_password_length
-  min_upper   = 4
-  min_lower   = 2
-  min_numeric = 4
-  special     = false
+data "azuread_group" "sqladmins" {
+  display_name     = "SQL_ACCESS"
+  security_enabled = true
+}
 
-  keepers = {
-    admin_password = var.ss_name
-  }
+data "azurerm_client_config" "sqlconfig" {
 }
 
 resource "azurerm_mssql_server" "sqlserver" {
@@ -51,9 +47,15 @@ resource "azurerm_mssql_server" "sqlserver" {
   resource_group_name               = var.rg_name
   location                          = var.location
   version                           = "12.0"
-  administrator_login               = "adminuser"
-  administrator_login_password      = element(concat(random_password.sqlpasswd.*.result, [""]), 0)
+  minimum_tls_version               = "1.2"
   tags                              = var.tags
+
+  azuread_administrator {
+    azuread_authentication_only     = true
+    login_username                  = "AzureAD_Admin"
+    object_id                       = data.azuread_group.sqladmins.object_id
+    tenant_id                       = data.azurerm_client_config.sqlconfig.tenant_id
+  }
 }
 
 resource "azurerm_mssql_virtual_network_rule" "networkrule" {

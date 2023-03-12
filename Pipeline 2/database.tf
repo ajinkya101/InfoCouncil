@@ -20,13 +20,8 @@ resource "azurerm_mssql_database" "db" {
   tags = var.tags
 }
 
-data "azurerm_key_vault_secret" "kvs" {
-  name         = "sqlpass"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
 resource "azurerm_key_vault_secret" "kvsecsql" {
   name         = "secret-${var.db_name}"
-  value        = "Server=tcp:${data.azurerm_mssql_server.sqlserver.fully_qualified_domain_name},1433;Initial Catalog=${azurerm_mssql_database.db.name};Persist Security Info=False;User ID=${data.azurerm_mssql_server.sqlserver.administrator_login};Password=${data.azurerm_key_vault_secret.kvs.value};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  value        = "Server=tcp:${data.azurerm_mssql_server.sqlserver.fully_qualified_domain_name};Database=${azurerm_mssql_database.db.name};TrustServerCertificate=True"  
   key_vault_id = data.azurerm_key_vault.kv.id
 }

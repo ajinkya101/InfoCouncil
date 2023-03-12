@@ -8,3 +8,5 @@ provider "azurerm" {
 provider "azurerm" {
   features {}
 }
+
+provider "azuread" {}
